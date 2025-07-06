@@ -1,7 +1,12 @@
+import router from "./Router/router";
+import { RouterProvider } from "react-router-dom";
+import {Provider} from 'react-redux';
+import { todoAppStore } from "./Store/todoApp.store";
+
 const App:React.FC<{}> = () => {
-    return <div>
-        Hello World!
-    </div>
+    return <Provider store={todoAppStore}>
+        <RouterProvider router={router}/>
+    </Provider> 
 }
 
 export default App;

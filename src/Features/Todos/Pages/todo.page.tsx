@@ -1,25 +1,32 @@
 import { todoPageType } from "../Types/todos.type";
 import '../Styles/todo.page.css';
 import TodoItemListComponent from "../Components/todoItemList.component";
+import { appUseDispatch, appUseSelector } from "../../../Store/todoApp.store";
+import { addTodoItem } from "../Slices/todo.slice";
 
 const TodoPage:React.FC<todoPageType> = () => {
-    const todoData = [
-        {   
-            id: '101',
-            name: 'Go for walk',
-            isCompleted: false
-        },
-        {
-            id: '102',
-            name: 'Bring Milk',
-            isCompleted: false
+    const todoData = appUseSelector(state => state.todo);
+    const dispatch = appUseDispatch();
+    const onKeyDown = (e:React.KeyboardEvent<HTMLInputElement>) => {
+        if(e.key === 'Enter') {
+            if(e.currentTarget.value.trim()) {
+                dispatch(addTodoItem({
+                    id: String(Date.now()),
+                    name: e.currentTarget.value,
+                    isCompleted: false
+                }));
+            }
+            (e.currentTarget.form as HTMLFormElement).reset();
         }
-    ]
-    return <form className="todo-page-component">
+    }
+    const onSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+    }
+    return <form className="todo-page-component" onSubmit={onSubmit}>
         <div className="title">TODOS</div>
         <div>
-            <button></button>
-            <input type="text" name="todoTask" />
+            <span></span>
+            <input type="text" name="todoTask" onKeyDown={onKeyDown}/>
         </div>
         <TodoItemListComponent todoData={todoData}/>
     </form>

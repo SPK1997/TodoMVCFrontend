@@ -13,7 +13,7 @@ export type loginPageType = {};
 
 export type signupPageType = {};
 
-export type authSliceActionType = {
+export type authSliceStateType = {
   email: string;
   password: string;
 };
